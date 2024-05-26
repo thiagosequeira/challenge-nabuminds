@@ -15,9 +15,9 @@
 | tweet_id | Unique ID of Tweet |
 | airline_sentiment | Sentiment of Tweet |
 | airline | Airline name |
-| airline_sentiment_confidence |  |
+| airline_sentiment_confidence | % probability of being true |
 | negativereason | Negative reason of Tweet |
-| negativereason_confidence |  |
+| negativereason_confidence | % probability of being true |
 | airline_sentiment_gold | Null column |
 | negativereason_gold | Null column |
 | retweet_count | How many retweets has the Tweet |
@@ -27,24 +27,18 @@
 | user_timezone | Time zone user tweeted |
 
 ## Data Cleaning
-I decided to implement data cleaning using Python (Pandas, Numpy), because I noticed the column `tweet_location` had incorrect and unclean information.
+I decided to implement data cleaning using Python (Pandas), because I noticed the column `tweet_location` had incorrect and unclean information.
 
-Has I mention in my `.ipynb` file, my first option was implementing `dataprep` library, using `clean_country()` function to clean this column. But I faced some unexpected issues trying to download the library on my pc. That's why I decided to implement dictionaries with AI help. 
+As I mentioned in my `.ipynb` file, my first option was implementing [dataprep](https://docs.dataprep.ai/user_guide/clean/clean_country.html) library, using `clean_country()` function to clean this column. However, I faced some unexpected issues trying to download the library on my PC. That's why I decided to implement dictionaries with AI help.
 
-I also noticed that I also can get the location of the tweet by `user_timezone` column, and it has clean data. That's why I sent the list of `user_timezone` and `tweet_location` to the AI and I specified that if it belongs to any city, county, state, province, location or time zone, I need it to return the country of origin. Else, it returns null.
+I also noticed that I could get the location of the tweet by the `user_timezone` column, which contains clean data. Therefore, I sent the list of `user_timezone` and `tweet_location` to the AI, specifying that if the value belongs to any city, county, state, province, location, or time zone, it should return the country of origin. Else, it returns null.
 
-I set `user_timezone` and `tweet_location` to be lowercase like the dictionaries and implement them. I create a column called `normalized_location` from `user_timezone` normalized data, then I fill the null cells by `tweet_location` that I implemented its dictionary before.
+I convert `tweet_location` to lowercase and normalize it using the `tweet_location_dic` dictionary, and I use `user_timezone_dic` for `user_timezone`. Then, it fills any null values in `user_timezone` with the normalized values from `tweet_location`.
 
 ```
-df['tweet_location'] = df['tweet_location'].str.lower()
-df['tweet_location_normalized'] = df['tweet_location'].map(tweet_location_dic)
+df['tweet_location'] = df['tweet_location'].str.lower().map(tweet_location_dic)
 
-df['normalized_location'] = df['user_timezone'].map(user_timezone_dic)
-df['normalized_location'] = df['normalized_location'].fillna(df['tweet_location_normalized'])
-
-df['tweet_location'] = df['normalized_location']
-
-df.drop(columns=['normalized_location', 'tweet_location_normalized'], inplace=True)
+df['tweet_location'] = df['user_timezone'].map(user_timezone_dic).fillna(df['tweet_location'])
 ```
 
 After the data cleaning, I write the output as "output_tweets.csv" and use it for the visualizations in Tableau and Power BI.
@@ -66,7 +60,7 @@ After the data cleaning, I write the output as "output_tweets.csv" and use it fo
 - **KPIs Visual:** I use `# Negatives`, `# Neutrals `, `# Positives` to show total of tweets, and % of total of each sentiment. Also, in a line chart by `tweet_created`.
 - **Sentiments by Airline:** I use `airline` in x and `# Tweets` in y, by `airline_sentiment`.
 - **Sentiments by Negative Reason:** I use `negativereason` in x and `# Tweets` in y. Also, `% of Total` for more insights.
-- **Tweets by Location:** I use `# Tweets` for values and `tweet_location` for the country location. (using the normalized data from python)
+- **Tweets by Location:** I use `# Tweets` for values and `tweet_location` for the country location. (using the normalized data from python).
 - **Tweets by Date:** I use `tweet_created` in x and `# Tweets` in y. Also, `Min/Max` for more insights.
 
 ### Power BI
@@ -83,9 +77,13 @@ After the data cleaning, I write the output as "output_tweets.csv" and use it fo
 
 - **KPIs Visual:** I use `# Negatives`, `# Neutrals `, `# Positives` to show total of tweets, and % of total of each sentiment.
 - **Sentiments by Airline:** I use `airline` in x and `# Tweets` in y, by `airline_sentiment`.
-- **Sentiments by Negative Reason:** I use `negativereason` in x and `# Tweets` in y.
+- **Sentiments by Negative Reason:** I use `negativereason` in y and `# Tweets` in x. Also, `% Negatives` for more insights.
 - **Tweets by Location:** I use `# Tweets` for values and `tweet_location` for the country location. (using the normalized data from python)
-- **Tweets by Date:** I use `tweet_created` in x and `# Tweets` in y. Also, `Min/Max` for more insights.
+- **Tweets by Date:** I use `tweet_created` in x and `# Tweets` in y. Also, `# Negatives`, `# Neutrals `, `# Positives` in details for insights.
 
 ## What I would add if I had more time
-
+If I had more time, I'd add the next things to the challenge:
+- A/B testing.
+- Connect Tableau/Power BI directly to a database.
+- Automations, for example using Microsoft Data Factory/Fabric.
+- Add security roles.
