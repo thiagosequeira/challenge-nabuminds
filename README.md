@@ -14,13 +14,15 @@
 | --- | --- |
 | tweet_id | Unique ID of Tweet |
 | airline_sentiment | Sentiment of Tweet |
-| airline | Airline name |
 | airline_sentiment_confidence | % probability of being true |
 | negativereason | Negative reason of Tweet |
 | negativereason_confidence | % probability of being true |
+| airline | Airline name |
 | airline_sentiment_gold | Null column |
+| name | User @ |
 | negativereason_gold | Null column |
 | retweet_count | How many retweets has the Tweet |
+| text | Tweet text |
 | tweet_coord | Coords of Tweet |
 | tweet_created | Date of Tweet |
 | tweet_location | Location that user configured in its profile |
