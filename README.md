@@ -79,7 +79,7 @@ After the data cleaning, I write the output as "output_tweets.csv" and use it fo
 
 - **KPIs Visual:** I use `# Negatives`, `# Neutrals `, `# Positives` to show total of tweets, and % of total of each sentiment.
 - **Sentiments by Airline:** I use `airline` in x and `# Tweets` in y, by `airline_sentiment`.
-- **Sentiments by Negative Reason:** I use `negativereason` in y and `# Tweets` in x. Also, `% Negatives` for more insights.
+- **Sentiments by Negative Reason:** I use `negativereason` in y and `# Negatives` in x. Also, `% Negatives` for more insights.
 - **Tweets by Location:** I use `# Tweets` for values and `tweet_location` for the country location. (using the normalized data from python)
 - **Tweets by Date:** I use `tweet_created` in x and `# Tweets` in y. Also, `# Negatives`, `# Neutrals `, `# Positives` in details for insights.
 
